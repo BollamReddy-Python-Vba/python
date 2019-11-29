@@ -1,0 +1,30 @@
+import csv
+import sys
+import win32com.client
+from win32com.client import Dispatch
+
+class Csv_XlConversion(object):
+    def __init__(self):
+        try:
+            data = []
+            fdata = []
+            rcount = 1
+            self.filname = "Csvfiledata.txt"
+            self.xlApp = win32com.client.Dispatch("Excel.Application")
+            self.xlApp.Visible = True
+            self.xlWb = self.xlApp.Workbooks.Add()
+            with open(self.filname, 'r') as csvfile:
+                data = csvfile.readlines()
+                for jcount in data[::]:
+                    fdata.append(jcount.split(';'))
+                for scount in fdata[::]:
+                    for kcount in range(len(scount)):
+                        print scount[kcount]
+                        self.xlWb.Sheets("Sheet1").Cells(rcount,kcount+1).Value = scount[kcount]
+                    rcount =rcount+1
+            self.filname.close()
+                #print("Total no. of rows: %d" % (csvfile.line_num))
+        except:
+            print sys.exc_info()
+
+obj = Csv_XlConversion()
