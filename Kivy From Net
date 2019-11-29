@@ -37,3 +37,5 @@ class main(App):
 
 if __name__ == "__main__":
     main().run()
+# Refer Link
+https://stackoverflow.com/questions/43666381/wrapping-the-text-of-a-kivy-label
