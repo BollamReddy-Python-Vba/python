@@ -1,0 +1,81 @@
+    import kivy
+    kivy.require('1.10.0')
+    from kivy.core.window import Window
+    from kivy.app import App
+    from kivy.uix.floatlayout import FloatLayout
+    from kivy.uix.label import Label
+    from kivy.graphics import Color, Rectangle
+    from kivy.uix.textinput import TextInput
+    from kivy.uix.spinner import Spinner
+    Window.size = (500, 400)
+    Window.clearcolor = (0.1, 0.1, 0.3, 0.2)
+    
+    
+    def show_selected_value(spinner, text):
+        print('Selected Process', spinner, 'have text', text)
+    
+    
+    class LRefConfigAutomation(App):
+        config = None
+    
+        def build_config(self, config):
+            config.setdefaults('LefConfigWindowSection', {
+                'PartInputLabel': 'Please Enter your Part No',
+                'TypeOfProcessLabel': 'Select Type Of Process',
+                'NormalFolderName': 'Enter Normal Folder Name',
+    
+            })
+            self.config = config
+    
+        def build(self):
+            config = self.config
+            root = FloatLayout()
+            lbl = config.get('LefConfigWindowSection', 'PartInputLabel')
+            self.label = Label(text=lbl, pos_hint={"center_x": .66, "center_y": .90}, size_hint=(1.0, 1.0), halign="left",valign="middle", font_name='Georgia')
+            self.label.bind(size=self.label.setter('text_size'))
+            self.label.font_size = '14.5dp'  # something that'll give texture bigger than phone's screen size
+            root.add_widget(self.label)
+            with self.label.canvas:
+                Color(0, 0, 0, 0)
+                Rectangle(pos=self.label.pos, size=self.label.size)
+            self.txtKemNo = TextInput(pos_hint={"center_x": .66, "center_y": .90}, size_hint=(None, None),font_name="Georgia", size=(100, 30), multiline=False, hint_text="Part Number")
+            root.add_widget(self.txtKemNo)
+            lbl = config.get('LefConfigWindowSection', 'TypeOfProcessLabel')
+            self.label = Label(text=lbl, pos_hint={"center_x": .66, "center_y": .75}, size_hint=(1.0, 1.0), halign="left",valign="middle", font_name='Georgia')
+            self.label.bind(size=self.label.setter('text_size'))
+            self.label.font_size = '14.5dp'  # something that'll give texture bigger than phone's screen size
+            root.add_widget(self.label)
+            with self.label.canvas:
+                Color(0, 0, 0, 0)
+                Rectangle(pos=self.label.pos, size=self.label.size)
+            self.requestsspinner = Spinner(
+                # default value shown
+                text='Select Process',
+                # available values will be binded to the combo
+                values=("Normal", "Official"),
+                # just for positioning in our example
+                size_hint=(None, None),
+                size=(110, 20),
+                pos_hint={'center_x': .66, 'center_y': .75}, font_name='Georgia')
+            self.requestsspinner.font_size = '14.5dp'
+            self.requestsspinner.bind(text=show_selected_value)
+            self.requestsspinner.bind(text=self.CreateLable)
+            root.add_widget(self.requestsspinner)
+            return root
+    
+        def CreateLable(self, spinner, text):
+            if text == "Normal":
+                self.label = Label(text="", pos_hint={"center_x": .66, "center_y": .65}, size_hint=(1.0, 1.0),halign="left",valign="middle", font_name='Georgia')
+                self.label.bind(size=self.label.setter('text_size'))
+                self.label.font_size = '14.5dp'
+                self.root.add_widget(self.label)
+            elif text == "Official":
+                config = self.config
+                lbl = config.get('LefConfigWindowSection', 'NormalFolderName')
+                self.label = Label(text=lbl, pos_hint={"center_x": .66, "center_y": .65}, size_hint=(1.0, 1.0),halign="left",valign="middle", font_name='Georgia')
+                self.label.bind(size=self.label.setter('text_size'))
+                self.label.font_size = '14.5dp'
+                self.root.add_widget(self.label)
+    
+    if __name__ == "__main__":
+        LRefConfigAutomation().run()
