@@ -1,0 +1,65 @@
+#:kivy 1.10.0
+
+<CustomLabel@Label>:
+    text_size: self.size
+    valign: "middle"
+    padding_x: 5
+
+<SingleLineTextInput@TextInput>:
+    multiline: False
+
+<GreenButton@Button>:
+    background_color: 1, 1, 1, 1
+    size_hint_y: None
+    height: self.parent.height * 0.120
+
+UserGroup:
+    age_label: age_label
+    age_textinput: age
+
+    GridLayout:
+        cols: 2
+        padding : 30,30
+        spacing: 20, 20
+        row_default_height: '30dp'
+
+        Label:
+            text: 'Male'
+            text_size: self.size
+            valign: 'middle'
+
+        CheckBox:
+            id : chk
+            group: 'check'
+            on_active:
+                root.age_label.opacity=1    # Visible
+                root.age_textinput.opacity=1    # Visible
+
+        Label:
+            text: 'Female'
+            text_size: self.size
+            valign: 'middle'
+
+        CheckBox:
+            group: 'check'
+            on_active:
+                root.age_label.opacity=0    # Invisible
+                root.age_textinput.opacity=0    # Invisible
+
+        CustomLabel:
+            id: age_label
+            text: 'age'
+            text_size: self.size
+            valign: 'middle'
+
+        SingleLineTextInput:
+            id: age
+
+
+        GreenButton:
+            text: 'Ok'
+
+
+        GreenButton:
+            text: 'Cancel'
+            on_press: app.stop()
